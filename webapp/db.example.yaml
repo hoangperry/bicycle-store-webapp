@@ -25,23 +25,28 @@ bicycle:
     name: "Bicycle BMW"
     price: 3500
     description: "Fast, Lightweight"
+    image: "./bicycle_image/bmw.jpg"
 
   bicycle2:
     name: "Bicycle Honda"
     price: 4000
     description: "Fast, Strong Structure"
+    image: "./bicycle_image/honda.jpg"
 
   bicycle3:
     name: "Bicycle Giant"
     price: 4500
     description: "Fast as speed of light"
+    image: "./bicycle_image/giant.jpg"
 
   bicycle4:
     name: "Bicycle Shimano"
     price: 5000
     description: "Mountain bike"
+    image: "./bicycle_image/shimano.jpg"
 
   bicycle5:
-    name: "Bicycle Fụi"
+    name: "Bicycle Fuji"
     price: 7000
     description: "Professional bike"
+    image: "./bicycle_image/fuji.jpg"

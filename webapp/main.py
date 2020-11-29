@@ -1,15 +1,25 @@
+import bcrypt
 import uvicorn
 import databases
 import sqlalchemy
+from typing import List
+from common.config import AppConf
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from common.models import User, Bicycle, Basket, user, bicycle, basket
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
+
+def check_password(password, hashed):
+    return bcrypt.checkpw(password, hashed)
 
 
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",
-    "localhost:3000"
+    "http://localhost:8000",
+    "localhost:8000",
+    "http://localhost:3131"
 ]
 
 app.add_middleware(
@@ -19,25 +29,31 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
-
-DATABASE_URL = "sqlite:///./test.db"
-database = databases.Database(DATABASE_URL)
+database = databases.Database(AppConf.database_url)
 
 metadata = sqlalchemy.MetaData()
 
-notes = sqlalchemy.Table(
-    "notes",
-    metadata,
-    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("text", sqlalchemy.String),
-    sqlalchemy.Column("completed", sqlalchemy.Boolean),
-)
-
 
 engine = sqlalchemy.create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
+    AppConf.database_url, connect_args={"check_same_thread": False}
 )
 metadata.create_all(engine)
+
+
+@app.on_event("startup")
+async def startup():
+    await database.connect()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
+
+
+@app.get("/bicycle/", response_model=List[Bicycle])
+async def read_notes():
+    query = bicycle.select()
+    return await database.fetch_all(query)
 
 
 @app.get("/", tags=["root"])
