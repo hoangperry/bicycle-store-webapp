@@ -1,0 +1,47 @@
+user:
+  user1:
+    name: "Hoang N. Truong"
+    age: 21
+    email: hoang@hoang.tech
+    username: hoang
+    unhashed_password: str
+
+  user2:
+    name: "User Anonymous 1"
+    age: 22
+    email: str
+    username: str
+    unhashed_password: str
+
+  user3:
+    name: "User Anonymous 2"
+    age: 26
+    email: str
+    username: str
+    unhashed_password: str
+
+bicycle:
+  bicycle1:
+    name: "Bicycle BMW"
+    price: 3500
+    description: "Fast, Lightweight"
+
+  bicycle2:
+    name: "Bicycle Honda"
+    price: 4000
+    description: "Fast, Strong Structure"
+
+  bicycle3:
+    name: "Bicycle Giant"
+    price: 4500
+    description: "Fast as speed of light"
+
+  bicycle4:
+    name: "Bicycle Shimano"
+    price: 5000
+    description: "Mountain bike"
+
+  bicycle5:
+    name: "Bicycle Fụi"
+    price: 7000
+    description: "Professional bike"
