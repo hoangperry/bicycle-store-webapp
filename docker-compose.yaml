@@ -12,11 +12,11 @@ services:
         aliases:
           - frontend
     environment:
-      NODE_PATH: ./src
-      REACT_APP_BICYCLE_API: http://localhost:8000/bicycle
-      REACT_APP_ADD_BASKET_API: http://localhost:8000/user/add_basket
-      REACT_APP_DEL_BASKET_API: http://localhost:8000/user/del_basket
-      REACT_APP_BASKET_BICYCLE_API: http://localhost:8000/user/basket_bicycle
+      - "NODE_PATH=./src"
+      - "REACT_APP_BICYCLE_API=localhost:8000/bicycle"
+      - "REACT_APP_ADD_BASKET_API=localhost:8000/user/add_basket"
+      - "REACT_APP_DEL_BASKET_API=localhost:8000/user/del_basket"
+      - "REACT_APP_BASKET_BICYCLE_API=localhost:8000/user/basket_bicycle"
     volumes:
       - ./frontend:/app
 

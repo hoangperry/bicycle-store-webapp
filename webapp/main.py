@@ -17,9 +17,9 @@ def check_password(password, hashed):
 app = FastAPI()
 
 origins = [
-    "http://localhost:8000",
-    "localhost:8000",
-    "http://localhost:3131"
+    "http://localhost:3131",
+    "localhost:3000/"
+    "http://localhost:3000/"
 ]
 
 app.add_middleware(
