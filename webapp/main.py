@@ -6,7 +6,7 @@ from typing import List
 from common.config import AppConf
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from common.models import User, Bicycle, Basket, user, bicycle, basket
+from common.models import User, Bicycle, Basket, UserBicycle, user, bicycle, basket
 # from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 
@@ -49,13 +49,10 @@ async def shutdown():
 # TEST
 @app.get("/user/add_basket")
 async def add_to_basket(user_id: int, bicycle_id: int):
-
-    print(user_id, bicycle_id)
     # noinspection PyBroadException
     try:
         query = basket.insert().values(user_id=user_id, bicycle_id=bicycle_id, quantity=1)
-        list_ = await database.execute(query)
-        print(list_)
+        await database.execute(query)
     except:
         old_val = basket.select().where(
             sqlalchemy.and_(basket.columns.user_id == user_id, basket.columns.bicycle_id == bicycle_id)
@@ -66,7 +63,6 @@ async def add_to_basket(user_id: int, bicycle_id: int):
         ).values(
             quantity=old_val + 1
         )
-        print(query)
         await database.execute(query)
         return {"response": True}
     return {"response": True}
@@ -74,7 +70,6 @@ async def add_to_basket(user_id: int, bicycle_id: int):
 
 @app.get("/user/del_basket")
 async def add_to_basket(user_id: int, bicycle_id: int):
-    print(user_id, bicycle_id)
     # noinspection PyBroadException
     try:
         old_val = basket.select().where(
@@ -88,6 +83,51 @@ async def add_to_basket(user_id: int, bicycle_id: int):
         else:
             query = basket.update().where(
                 sqlalchemy.and_(basket.columns.user_id == user_id, basket.columns.bicycle_id == bicycle_id)
+            ).values(
+                quantity=old_val - 1
+            )
+        await database.execute(query)
+    except:
+        return {"response": False}
+    return {"response": True}
+
+
+@app.post("/user/add_basket")
+async def add_to_basket(body: UserBicycle):
+    # noinspection PyBroadException
+    try:
+        query = basket.insert().values(user_id=body.user_id, bicycle_id=body.bicycle_id, quantity=1)
+        await database.execute(query)
+    except:
+        old_val = basket.select().where(
+            sqlalchemy.and_(basket.columns.user_id == body.user_id, basket.columns.bicycle_id == body.bicycle_id)
+        )
+        old_val = engine.execute(old_val).fetchone()[basket.c.quantity]
+        query = basket.update().where(
+            sqlalchemy.and_(basket.columns.user_id == body.user_id, basket.columns.bicycle_id == body.bicycle_id)
+        ).values(
+            quantity=old_val + 1
+        )
+        await database.execute(query)
+        return {"response": True}
+    return {"response": True}
+
+
+@app.post("/user/del_basket")
+async def add_to_basket(body: UserBicycle):
+    # noinspection PyBroadException
+    try:
+        old_val = basket.select().where(
+            basket.columns.user_id == body.user_id and basket.columns.bicycle_id == body.bicycle_id
+        )
+        old_val = engine.execute(old_val).fetchone()[basket.c.quantity]
+        if old_val == 1:
+            query = basket.delete().where(
+                sqlalchemy.and_(basket.columns.user_id == body.user_id, basket.columns.bicycle_id == body.bicycle_id)
+            )
+        else:
+            query = basket.update().where(
+                sqlalchemy.and_(basket.columns.user_id == body.user_id, basket.columns.bicycle_id == body.bicycle_id)
             ).values(
                 quantity=old_val - 1
             )

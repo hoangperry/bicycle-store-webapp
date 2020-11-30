@@ -42,7 +42,13 @@ class Body extends React.Component {
     }
 
     addItemToBasket(userId, bicycleId) {
-        fetch(process.env.REACT_APP_ADD_BASKET_API + '?user_id=' + userId + '&bicycle_id=' + bicycleId);
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"user_id": userId, "bicycle_id": bicycleId})
+        };
+        fetch(process.env.REACT_APP_ADD_BASKET_API, requestOptions);
+        // fetch(process.env.REACT_APP_ADD_BASKET_API + '?user_id=' + userId + '&bicycle_id=' + bicycleId);
         this.componentDidMount();
     }
 

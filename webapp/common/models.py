@@ -26,6 +26,11 @@ class Basket(BaseModel):
     quantity: int
 
 
+class UserBicycle(BaseModel):
+    user_id: int
+    bicycle_id: int
+
+
 metadata = sqlalchemy.MetaData()
 engine = sqlalchemy.create_engine(
     AppConf.database_url, connect_args={"check_same_thread": False}

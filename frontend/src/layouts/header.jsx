@@ -43,8 +43,14 @@ class Header extends React.Component {
     }
 
     removeBicycle(bicycleId, userId) {
-        fetch(process.env.REACT_APP_DEL_BASKET_API + '?user_id=' + userId + '&bicycle_id=' + bicycleId)
-            .then(r => {});
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"user_id": userId, "bicycle_id": bicycleId})
+        };
+        fetch(process.env.REACT_APP_DEL_BASKET_API, requestOptions).then(r => {});
+        // fetch(process.env.REACT_APP_DEL_BASKET_API + '?user_id=' + userId + '&bicycle_id=' + bicycleId)
+        //     .then(r => {});
         this.componentDidMount();
     }
 
