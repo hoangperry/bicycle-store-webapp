@@ -57,8 +57,8 @@ bicycle = sqlalchemy.Table(
 basket = sqlalchemy.Table(
     "basket",
     metadata,
-    sqlalchemy.Column("user_id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("bicycle_id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("user_id", sqlalchemy.Integer, sqlalchemy.ForeignKey(user.columns.id), primary_key=True),
+    sqlalchemy.Column("bicycle_id", sqlalchemy.Integer, sqlalchemy.ForeignKey(bicycle.columns.id), primary_key=True),
     sqlalchemy.Column("quantity", sqlalchemy.Integer),
 )
 

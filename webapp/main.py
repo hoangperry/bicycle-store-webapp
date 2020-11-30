@@ -53,35 +53,75 @@ async def shutdown():
 # TEST
 @app.get("/user/add_basket")
 async def add_to_basket(user_id: int, bicycle_id: int):
-    try:
-        query = basket.select().where(
-            basket.columns.user_id == user_id and basket.columns.bicycle_id == bicycle_id
-        ).exists()
-        print(engine.execute(query).fetchall())
 
+    print(user_id, bicycle_id)
+    # noinspection PyBroadException
+    try:
         query = basket.insert().values(user_id=user_id, bicycle_id=bicycle_id, quantity=1)
-        await database.execute(query)
-    except Exception as _:
+        list_ = await database.execute(query)
+        print(list_)
+    except:
+        old_val = basket.select().where(
+            sqlalchemy.and_(basket.columns.user_id == user_id, basket.columns.bicycle_id == bicycle_id)
+        )
+        old_val = engine.execute(old_val).fetchone()[basket.c.quantity]
         query = basket.update().where(
-            basket.columns.user_id == user_id and basket.columns.bicycle_id == bicycle_id
-        ).values(quantity=basket.columns.quantity+1)
+            sqlalchemy.and_(basket.columns.user_id == user_id, basket.columns.bicycle_id == bicycle_id)
+        ).values(
+            quantity=old_val + 1
+        )
+        print(query)
         await database.execute(query)
         return {"response": True}
+    return {"response": True}
+
+
+@app.get("/user/del_basket")
+async def add_to_basket(user_id: int, bicycle_id: int):
+    print(user_id, bicycle_id)
+    # noinspection PyBroadException
+    try:
+        old_val = basket.select().where(
+            basket.columns.user_id == user_id and basket.columns.bicycle_id == bicycle_id
+        )
+        old_val = engine.execute(old_val).fetchone()[basket.c.quantity]
+        if old_val == 1:
+            query = basket.delete().where(
+                sqlalchemy.and_(basket.columns.user_id == user_id, basket.columns.bicycle_id == bicycle_id)
+            )
+        else:
+            query = basket.update().where(
+                sqlalchemy.and_(basket.columns.user_id == user_id, basket.columns.bicycle_id == bicycle_id)
+            ).values(
+                quantity=old_val - 1
+            )
+        await database.execute(query)
+    except:
+        return {"response": False}
     return {"response": True}
 
 
 @app.get("/user/basket", response_model=List[Basket])
 async def get_basket(user_id: int):
     query = basket.select().where(basket.columns.user_id == user_id)
-    # query = bicycle.select().where(bicycle.columns.name == "Bicycle BMW" and bicycle.columns.price == 4000)
     return await database.fetch_all(query)
 
 
-@app.get("/bicycle/", response_model=List[Basket])
+# Needed to define merged return model here
+@app.get("/user/basket_bicycle")
+async def get_basket(user_id: int):
+    query = basket.join(
+        bicycle, basket.columns.bicycle_id == bicycle.columns.id
+    ).select().where(
+        basket.columns.user_id == user_id
+    )
+    return await database.fetch_all(query)
+
+
+@app.get("/bicycle")
 async def get_basket(bicycle_id: int):
-    query = bicycle.select().where(bicycle.columns.bicycle_id == bicycle_id)
-    # query = bicycle.select().where(bicycle.columns.name == "Bicycle BMW" and bicycle.columns.price == 4000)
-    return await database.fetch_all(query)
+    query = bicycle.select().where(bicycle.columns.id == bicycle_id)
+    return await database.fetch_one(query)
 
 
 @app.get("/bicycles/", response_model=List[Bicycle])
