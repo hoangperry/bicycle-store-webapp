@@ -6,6 +6,7 @@
  - [x] Dockerizer
  - [ ] Testing
  - [ ] Login/Authentication
+ - [ ] Basket faster update
  
  
 #### Preview
