@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Header from '../layouts/header.jsx';
+import Login from '../layouts/login.jsx';
 import {
     Card,
     CardImg,
@@ -23,6 +24,8 @@ class Body extends React.Component {
             hits: [],
             isLoading: false,
             error: null,
+            login: true,
+            userId: 31,
         };
     }
 
@@ -41,14 +44,22 @@ class Body extends React.Component {
             .catch(error => this.setState({ error, isLoading: false }));
     }
 
+    addItemToBasket(userId, bicycle_id) {
+        fetch('http://localhost:8000/add_basket?user_id='+userId+'&bicycle_id=' + bicycle_id)
+
+    }
+
     render() {
-        const { hits, isLoading, error } = this.state;
+        const { hits, isLoading, error, login, userId } = this.state;
 
         if (error) {
             return <p>{error.message}</p>;
         }
         if (isLoading) {
             return <p>Loading ...</p>;
+        }
+        if (!login) {
+            return <Login />;
         }
         return (
             <div>
@@ -69,7 +80,7 @@ class Body extends React.Component {
                                             <CardTitle>{bicycle.name}</CardTitle>
                                             <CardSubtitle>{bicycle.price} $</CardSubtitle>
                                             <CardText>{bicycle.description}</CardText>
-                                            <Button>Add to basket</Button>
+                                            <Button onclick={this.addItemToBasket(userId, bicycle.id)}>Add to basket</Button>
                                         </CardBody>
                                     </Card>
                                 </Col>
