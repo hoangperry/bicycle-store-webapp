@@ -29,7 +29,7 @@ class Body extends React.Component {
     componentDidMount() {
         this.setState({ isLoading: true });
         // process.env.REACT_APP_BICYCLE_API
-        fetch(process.env.REACT_APP_BICYCLE_API)
+        fetch(process.env.REACT_APP_BICYCLE_API, { crossDomain: true })
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -45,7 +45,8 @@ class Body extends React.Component {
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({"user_id": userId, "bicycle_id": bicycleId})
+            body: JSON.stringify({"user_id": userId, "bicycle_id": bicycleId}),
+            crossDomain: true
         };
         fetch(process.env.REACT_APP_ADD_BASKET_API, requestOptions);
         // fetch(process.env.REACT_APP_ADD_BASKET_API + '?user_id=' + userId + '&bicycle_id=' + bicycleId);

@@ -10,15 +10,11 @@ from common.models import User, Bicycle, Basket, UserBicycle, user, bicycle, bas
 # from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 
-def check_password(password, hashed):
-    return bcrypt.checkpw(password, hashed)
-
-
 app = FastAPI()
 
 origins = [
     "http://localhost:3131",
-    "localhost:3000/",
+    "http://localhost:3000",
     "http://localhost:3000",
     "http://34.70.32.4:3131",
     "http://apollo.hoang.tech"

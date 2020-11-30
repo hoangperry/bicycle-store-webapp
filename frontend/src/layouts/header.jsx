@@ -30,7 +30,7 @@ class Header extends React.Component {
 
     componentDidMount() {
         this.setState({ isLoading: true });
-        fetch(process.env.REACT_APP_BASKET_BICYCLE_API + '?user_id=' + this.state.userId)
+        fetch(process.env.REACT_APP_BASKET_BICYCLE_API + '?user_id=' + this.state.userId, {crossDomain:true})
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -46,7 +46,8 @@ class Header extends React.Component {
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({"user_id": userId, "bicycle_id": bicycleId})
+            body: JSON.stringify({"user_id": userId, "bicycle_id": bicycleId}),
+            crossDomain: true,
         };
         fetch(process.env.REACT_APP_DEL_BASKET_API, requestOptions).then(r => {});
         // fetch(process.env.REACT_APP_DEL_BASKET_API + '?user_id=' + userId + '&bicycle_id=' + bicycleId)
