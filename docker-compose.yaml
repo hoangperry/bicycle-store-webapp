@@ -40,4 +40,3 @@ services:
 networks:
   bicycle-network:
     external: false
-    name: bicycle-network
