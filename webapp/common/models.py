@@ -23,6 +23,7 @@ class Bicycle(BaseModel):
 class Basket(BaseModel):
     user_id: int
     bicycle_id: int
+    quantity: int
 
 
 metadata = sqlalchemy.MetaData()
@@ -58,6 +59,7 @@ basket = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("user_id", sqlalchemy.Integer, primary_key=True),
     sqlalchemy.Column("bicycle_id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("quantity", sqlalchemy.Integer),
 )
 
 metadata.create_all(engine)

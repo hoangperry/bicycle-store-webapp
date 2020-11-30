@@ -8,7 +8,10 @@ from common.config import AppConf
 
 if __name__ == '__main__':
     # Remove old Sqlite file
-    os.remove(AppConf.database_url.replace('sqlite:///', ''))
+    try:
+        os.remove(AppConf.database_url.replace('sqlite:///', ''))
+    except:
+        print("DB file is not exists")
 
     from common.models import user, bicycle
 

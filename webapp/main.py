@@ -50,7 +50,41 @@ async def shutdown():
     await database.disconnect()
 
 
-@app.get("/bicycle/", response_model=List[Bicycle])
+# TEST
+@app.get("/user/add_basket")
+async def add_to_basket(user_id: int, bicycle_id: int):
+    try:
+        query = basket.select().where(
+            basket.columns.user_id == user_id and basket.columns.bicycle_id == bicycle_id
+        ).exists()
+        print(engine.execute(query).fetchall())
+
+        query = basket.insert().values(user_id=user_id, bicycle_id=bicycle_id, quantity=1)
+        await database.execute(query)
+    except Exception as _:
+        query = basket.update().where(
+            basket.columns.user_id == user_id and basket.columns.bicycle_id == bicycle_id
+        ).values(quantity=basket.columns.quantity+1)
+        await database.execute(query)
+        return {"response": True}
+    return {"response": True}
+
+
+@app.get("/user/basket", response_model=List[Basket])
+async def get_basket(user_id: int):
+    query = basket.select().where(basket.columns.user_id == user_id)
+    # query = bicycle.select().where(bicycle.columns.name == "Bicycle BMW" and bicycle.columns.price == 4000)
+    return await database.fetch_all(query)
+
+
+@app.get("/bicycle/", response_model=List[Basket])
+async def get_basket(bicycle_id: int):
+    query = bicycle.select().where(bicycle.columns.bicycle_id == bicycle_id)
+    # query = bicycle.select().where(bicycle.columns.name == "Bicycle BMW" and bicycle.columns.price == 4000)
+    return await database.fetch_all(query)
+
+
+@app.get("/bicycles/", response_model=List[Bicycle])
 async def read_notes():
     query = bicycle.select()
     return await database.fetch_all(query)
@@ -58,7 +92,7 @@ async def read_notes():
 
 @app.get("/", tags=["root"])
 async def read_root() -> dict:
-    return {"message": "Welcome to your todo list."}
+    return {"message": "Welcome"}
 
 
 if __name__ == "__main__":
