@@ -30,7 +30,7 @@ class Header extends React.Component {
 
     componentDidMount() {
         this.setState({ isLoading: true });
-        fetch('http://localhost:8000/user/basket_bicycle?user_id=' + this.state.userId)
+        fetch(process.env.REACT_APP_BASKET_BICYCLE_API + '?user_id=' + this.state.userId)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -43,7 +43,7 @@ class Header extends React.Component {
     }
 
     removeBicycle(bicycleId, userId) {
-        fetch('http://localhost:8000/user/del_basket?user_id=' + userId + '&bicycle_id=' + bicycleId)
+        fetch(process.env.REACT_APP_DEL_BASKET_API + '?user_id=' + userId + '&bicycle_id=' + bicycleId)
             .then(r => {});
         this.componentDidMount();
     }
@@ -94,7 +94,6 @@ class Header extends React.Component {
                                         { baskets.map(basket => {
                                             const bicycleId = basket.bicycle_id;
                                             return (
-
                                                 <tr className="mt-4">
                                                     <td>
                                                      <CardImg top

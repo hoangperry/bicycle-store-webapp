@@ -29,7 +29,7 @@ class Body extends React.Component {
     componentDidMount() {
         this.setState({ isLoading: true });
         // process.env.REACT_APP_BICYCLE_API
-        fetch('http://localhost:8000/bicycles')
+        fetch(process.env.REACT_APP_BICYCLE_API)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -42,7 +42,7 @@ class Body extends React.Component {
     }
 
     addItemToBasket(userId, bicycleId) {
-        fetch('http://localhost:8000/user/add_basket?user_id=' + userId + '&bicycle_id=' + bicycleId);
+        fetch(process.env.REACT_APP_ADD_BASKET_API + '?user_id=' + userId + '&bicycle_id=' + bicycleId);
         this.componentDidMount();
     }
 
