@@ -3,3 +3,4 @@ fastapi
 bcrypt
 databases
 aiosqlite
+PyYAML
