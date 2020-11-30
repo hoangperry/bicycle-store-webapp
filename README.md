@@ -1,5 +1,16 @@
 # bicycle-store-webapp
 
+#### U
+
+`docker-compose up`
+
+or
+
+`sudo docker-compose up`
+
+
+#### Feature
+
  - [x] Basic add/remove basket
  - [x] Basic front end
  - [x] Deploy Static file using NginX
