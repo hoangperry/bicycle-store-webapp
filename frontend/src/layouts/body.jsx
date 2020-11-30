@@ -10,11 +10,8 @@ import {
     CardSubtitle,
     Button,
     Row,
-    Col
+    Col, Container
 } from 'reactstrap';
-
-
-import img1 from '../assets/images/big/img1.jpg';
 
 
 class Body extends React.Component {
@@ -25,14 +22,14 @@ class Body extends React.Component {
             isLoading: false,
             error: null,
             login: true,
-            userId: 31,
+            userId: 1,
         };
     }
 
     componentDidMount() {
         this.setState({ isLoading: true });
         // process.env.REACT_APP_BICYCLE_API
-        fetch('http://localhost:8000/bicycle')
+        fetch('http://localhost:8000/bicycles')
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -44,26 +41,25 @@ class Body extends React.Component {
             .catch(error => this.setState({ error, isLoading: false }));
     }
 
-    addItemToBasket(userId, bicycle_id) {
-        fetch('http://localhost:8000/add_basket?user_id='+userId+'&bicycle_id=' + bicycle_id)
-
+    addItemToBasket(userId, bicycleId) {
+        fetch('http://localhost:8000/user/add_basket?user_id=' + userId + '&bicycle_id=' + bicycleId);
+        this.componentDidMount();
     }
 
     render() {
         const { hits, isLoading, error, login, userId } = this.state;
-
         if (error) {
             return <p>{error.message}</p>;
-        }
-        if (isLoading) {
-            return <p>Loading ...</p>;
         }
         if (!login) {
             return <Login />;
         }
+        if (isLoading) {
+            return <Container>Loading</Container>;
+        }
         return (
             <div>
-                <Header/>
+                <Header />
                 <div className="page-wrapper d-block">
                     <div className="page-content container-fluid">
                         <h5 className="mb-4">Basic Cards</h5>
@@ -80,7 +76,13 @@ class Body extends React.Component {
                                             <CardTitle>{bicycle.name}</CardTitle>
                                             <CardSubtitle>{bicycle.price} $</CardSubtitle>
                                             <CardText>{bicycle.description}</CardText>
-                                            <Button onclick={this.addItemToBasket(userId, bicycle.id)}>Add to basket</Button>
+                                            <Button onClick={
+                                                () => {
+                                                        this.addItemToBasket(userId, bicycle.id);
+                                                    }
+                                                }>
+                                                Add to basket
+                                            </Button>
                                         </CardBody>
                                     </Card>
                                 </Col>
