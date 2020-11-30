@@ -1,6 +1,8 @@
 # bicycle-store-webapp
 
-#### U
+[Online demo](http://apollo.hoang.tech)
+
+#### Usage
 
 `docker-compose up`
 
