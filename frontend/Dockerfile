@@ -9,5 +9,5 @@ RUN npm run build
 
 # Serve app
 FROM nginx:1.17-alpine
-COPY --from=0 /app/dist /usr/share/nginx/html
+COPY --from=0 /app/build /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]

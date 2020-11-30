@@ -14,10 +14,10 @@ services:
     environment:
       NODE_PATH: ./src
       REACT_APP_BICYCLE_API: localhost/bicycle
-    entrypoint: "npm run start"
     volumes:
       - ${PWD}/frontend:/app/
 
+  webapp:
 
 networks:
   bicycle-network:
