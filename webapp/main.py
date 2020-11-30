@@ -18,8 +18,10 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3131",
-    "localhost:3000/"
-    "http://localhost:3000/"
+    "localhost:3000/",
+    "http://localhost:3000",
+    "http://34.70.32.4:3131",
+    "http://apollo.hoang.tech"
 ]
 
 app.add_middleware(
