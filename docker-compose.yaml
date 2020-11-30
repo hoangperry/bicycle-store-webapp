@@ -15,9 +15,23 @@ services:
       NODE_PATH: ./src
       REACT_APP_BICYCLE_API: localhost/bicycle
     volumes:
-      - ${PWD}/frontend:/app/
+      - ./frontend:/app
 
   webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    ports:
+      - 8000:80
+    networks:
+      bicycle-network:
+        aliases:
+          - webapp
+    environment:
+      APP_MODULE: "main:app"
+
+    volumes:
+      - ./webapp:/app
 
 networks:
   bicycle-network:

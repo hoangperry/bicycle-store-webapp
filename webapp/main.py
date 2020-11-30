@@ -7,7 +7,7 @@ from common.config import AppConf
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from common.models import User, Bicycle, Basket, user, bicycle, basket
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+# from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 
 def check_password(password, hashed):
@@ -29,14 +29,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
 database = databases.Database(AppConf.database_url)
-
 metadata = sqlalchemy.MetaData()
-
-
-engine = sqlalchemy.create_engine(
-    AppConf.database_url, connect_args={"check_same_thread": False}
-)
+engine = sqlalchemy.create_engine(AppConf.database_url, connect_args={"check_same_thread": False})
 metadata.create_all(engine)
 
 
@@ -136,4 +132,4 @@ async def read_root() -> dict:
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
