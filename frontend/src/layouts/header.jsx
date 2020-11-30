@@ -7,7 +7,6 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    Row,
     Table,
     CardImg, Button
 } from 'reactstrap';
