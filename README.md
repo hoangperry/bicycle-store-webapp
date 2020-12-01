@@ -10,6 +10,13 @@ or
 
 `sudo docker-compose up`
 
+To create example product
+
+`cd webapp/`
+
+`python3 init_db_script.py`
+
+
 
 #### Feature
 
