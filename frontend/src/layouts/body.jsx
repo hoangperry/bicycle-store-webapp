@@ -50,7 +50,7 @@ class Body extends React.Component {
         };
         fetch(process.env.REACT_APP_ADD_BASKET_API, requestOptions);
         // fetch(process.env.REACT_APP_ADD_BASKET_API + '?user_id=' + userId + '&bicycle_id=' + bicycleId);
-        this.componentDidMount();
+        // this.componentDidMount();
     }
 
     render() {
